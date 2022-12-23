@@ -9,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
             process.env.JWT_SECRET_KEY || 'jwtsecretkey',
             (err, user) => {
                 if (err) {
-                    res.status(403).json({
+                    res.status(401).json({
                         message: 'invalid token.',
                     })
                 } else {
