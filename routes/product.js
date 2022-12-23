@@ -13,7 +13,7 @@ router.get('/:id', productController.getProduct)
 
 router.post('/', isAuthenticated, isAdmin, productController.addProduct)
 
-router.put('/:id', isAuthenticated, isAdmin, productController.addProduct)
+router.put('/:id', isAuthenticated, isAdmin, productController.updateProduct)
 
 router.delete('/:id', isAuthenticated, isAdmin, productController.deleteProduct)
 
