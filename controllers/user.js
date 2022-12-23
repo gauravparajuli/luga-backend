@@ -4,7 +4,7 @@ import User from '../models/User.js'
 export const deleteUser = async (req, res, next) => {
     const userId = req.params.id
     try {
-        await User.findByIdandDelete({ _id: userId })
+        await User.findByIdandDelete(userId)
         res.status(204).send()
     } catch (error) {
         next(error) // pass to error handling middleware
