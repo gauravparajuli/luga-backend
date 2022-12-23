@@ -8,7 +8,7 @@ import orderRoutes from './routes/order.js'
 import productRoutes from './routes/product.js'
 
 // import custom middlewares here
-import { resourceNotFound, errorHandler } from './middlewares/errorHandling.js'
+import { resourceNotFound, errorHandler } from './middlewares/error-handling.js'
 
 const app = express()
 

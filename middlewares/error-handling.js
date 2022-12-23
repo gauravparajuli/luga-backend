@@ -10,10 +10,13 @@ export const errorHandler = (error, req, res, next) => {
             res.status(error.statusCode).send(error.message)
             return next() // special exception for 404 errors in production
         }
-        res.status(500).send('<h1>500 Internal Server Error</h1>')
+        res.status(500).send('500 Internal Server Error')
     } else {
         // in development mode so we report errors
-        res.status(error.statusCode ? error.statusCode : 500).json(error)
+        res.status(error.statusCode ? error.statusCode : 500).json({
+            message: error.message,
+            error,
+        })
     }
     next()
 }
