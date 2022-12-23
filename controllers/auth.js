@@ -25,7 +25,7 @@ export const loginUser = async (req, res, next) => {
     try {
         const userInstance = await User.findOne({ email })
         if (!userInstance) {
-            const error = new Error('invalid user or password')
+            const error = new Error('invalid user or password.')
             error.statusCode = 401
             throw error
         }
@@ -33,7 +33,7 @@ export const loginUser = async (req, res, next) => {
         // valid user now check for password
         bcrypt.compare(password, userInstance.password).then((res) => {
             if (!res) {
-                const error = new Error('invalid user or password')
+                const error = new Error('invalid user or password.')
                 error.statusCode = 401
                 throw error
             }
