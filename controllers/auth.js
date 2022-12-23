@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 import User from '../models/User.js'
 
@@ -38,7 +39,18 @@ export const loginUser = async (req, res, next) => {
             }
         })
 
-        res.status(200).send('login successfull')
+        const accessToken = jwt.sign(
+            {
+                id: userInstance._id,
+                isAdmin: userInstance.isAdmin,
+            },
+            process.env.JWT_SECRET_KEY || 'jwtsecretkey',
+            { expiresIn: '3d' }
+        )
+
+        const { username, _id, ...others } = userInstance._doc
+
+        res.status(200).json({ _id, username, email, accessToken })
     } catch (error) {
         next(error) // pass to error handling middleware
     }
