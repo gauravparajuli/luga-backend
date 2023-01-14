@@ -1,17 +1,41 @@
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
-import User from '../models/User.js'
+const User = require('../models/User.js')
+const {
+    validateUserSignin,
+    validateUserSignup,
+} = require('../validators/user-validator.js')
 
 // CREATE NEW USER      POST
-export const signupUser = async (req, res, next) => {
+exports.signupUser = async (req, res, next) => {
     const { username, email, password } = req.body
 
-    let hashedPassword = bcrypt.hashSync(password, process.env.SALT_ROUNDS || 8)
-
-    const newUser = new User({ username, email, password: hashedPassword })
+    const { error, value } = validateUserSignup(req.body)
 
     try {
+        if (error) {
+            const err = new Error(`Input validation failed.`)
+            err.statusCode = 422
+            err.details = error.details
+            throw err
+        }
+
+        // check if email is already registered
+        const user = await User.findOne({ email })
+        if (user) {
+            const err = new Error(`User already registered`)
+            err.statusCode = 400
+            err.details = error.details
+            throw err
+        }
+
+        let hashedPassword = await bcrypt.hash(
+            password,
+            process.env.SALT_ROUNDS || 7
+        )
+
+        const newUser = new User({ username, email, password: hashedPassword })
         const savedUser = await newUser.save()
         res.status(201).json(savedUser)
     } catch (error) {
@@ -20,8 +44,11 @@ export const signupUser = async (req, res, next) => {
 }
 
 // LOGIN USER       POST
-export const loginUser = async (req, res, next) => {
+exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body
+    const { error, value } = userSigninSchema.validate(req.body, {
+        abortEarly: false,
+    })
     try {
         const userInstance = await User.findOne({ email })
         if (!userInstance) {

@@ -1,14 +1,17 @@
-import express from 'express'
+const express = require('express')
 
 // import routes here
-import userRoutes from './routes/user.js'
-import authRoutes from './routes/auth.js'
-import cartRoutes from './routes/cart.js'
-import orderRoutes from './routes/order.js'
-import productRoutes from './routes/product.js'
+const userRoutes = require('./routes/user.js')
+const authRoutes = require('./routes/auth.js')
+const cartRoutes = require('./routes/cart.js')
+const orderRoutes = require('./routes/order.js')
+const productRoutes = require('./routes/product.js')
 
 // import custom middlewares here
-import { resourceNotFound, errorHandler } from './middlewares/error-handling.js'
+const {
+    resourceNotFound,
+    errorHandler,
+} = require('./middlewares/error-handling.js')
 
 const app = express()
 
@@ -26,4 +29,4 @@ app.use('/api/v1/product', productRoutes)
 app.use(resourceNotFound)
 app.use(errorHandler)
 
-export default app
+module.exports = app

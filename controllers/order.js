@@ -1,8 +1,8 @@
-import Order from '../models/Order.js'
+const Order = require('../models/Order.js')
 
 // GET REQUESTED ORDER        GET
-export const getCart = async (req, res, next) => {
-    const userId = req.params.id
+exports.getOrder = async (req, res, next) => {
+    const userId = req.user.id
     try {
         const cart = await Cart.findOne({ userId })
         res.status(200).json(cart)
@@ -11,8 +11,12 @@ export const getCart = async (req, res, next) => {
     }
 }
 
+exports.createOrder = async (req, res, next) => {}
+
+exports.deleteOrder = async (req, res, next) => {}
+
 // GET ALL ORDER         GET
-export const getAllCarts = async (req, res, next) => {
+exports.getAllOrders = async (req, res, next) => {
     try {
         const carts = await Cart.find()
         res.status(200).json(carts)
@@ -22,8 +26,8 @@ export const getAllCarts = async (req, res, next) => {
 }
 
 // UPDATE A ORDER         UPDATE
-export const updateCart = async (req, res, next) => {
-    const userId = req.params.id
+exports.updateOrder = async (req, res, next) => {
+    const userId = req.user.id
     try {
         const updatedCart = await Cart.findOneAndUpdate(
             { userId },
@@ -37,7 +41,7 @@ export const updateCart = async (req, res, next) => {
 }
 
 // GET MONTHLY INCOME       GET
-export const getMontlyIncome = async (res, res, next) => {
+exports.getMontlyIncome = async (req, res, next) => {
     const Date = new Date()
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1))
     const previousMonth = new Date(new Date().setMonth(lastMonth - 1))

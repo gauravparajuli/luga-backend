@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose'
+const mongoose, { Schema, model } = require('mongoose')
 
 const CartSchema = new Schema(
     {
@@ -24,4 +24,4 @@ const CartSchema = new Schema(
     { timestamps: true }
 )
 
-export default model('Cart', CartSchema)
+module.exports =  model('Cart', CartSchema)

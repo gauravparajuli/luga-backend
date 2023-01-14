@@ -1,7 +1,7 @@
-import User from '../models/User.js'
+const User = require('../models/User.js')
 
 // DELETE USER      DELETE
-export const deleteUser = async (req, res, next) => {
+exports.deleteUser = async (req, res, next) => {
     const userId = req.params.id
     try {
         await User.findByIdandDelete(userId)
@@ -12,7 +12,7 @@ export const deleteUser = async (req, res, next) => {
 }
 
 // GET ALL USERS      GET
-export const getAllUsers = async (req, res, next) => {
+exports.getAllUsers = async (req, res, next) => {
     const newFive = req.query.new
     try {
         const query = newFive
@@ -28,7 +28,7 @@ export const getAllUsers = async (req, res, next) => {
 }
 
 // GET USERS STAT       GET
-export const getUsersStats = async (req, res, next) => {
+exports.getUsersStats = async (req, res, next) => {
     const date = new Date()
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1))
 

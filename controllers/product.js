@@ -1,7 +1,7 @@
-import Product from '../models/Product.js'
+const Product = require('../models/Product.js')
 
 // GET REQUESTED PRODUCT        GET
-export const getProduct = async (req, res, next) => {
+exports.getProduct = async (req, res, next) => {
     const productId = req.params.id
     try {
         const product = await Product.findById(productId)
@@ -12,7 +12,7 @@ export const getProduct = async (req, res, next) => {
 }
 
 // GET ALL PRODUCTS         GET
-export const getAllProducts = async (req, res, next) => {
+exports.getAllProducts = async (req, res, next) => {
     const qNew = req.query.new
     const qCategory = req.query.category
 
@@ -27,7 +27,7 @@ export const getAllProducts = async (req, res, next) => {
 }
 
 // ADD A PRODUCT           POST
-export const addProduct = async (req, res, next) => {
+exports.addProduct = async (req, res, next) => {
     const newProduct = new Product(req.body)
 
     try {
@@ -39,7 +39,7 @@ export const addProduct = async (req, res, next) => {
 }
 
 // UPDATE A PRODUCT         UPDATE
-export const updateProduct = async (req, res, next) => {
+exports.updateProduct = async (req, res, next) => {
     const productId = req.params.id
     try {
         const updatedProduct = await Product.findByIdandUpdate(
@@ -54,7 +54,7 @@ export const updateProduct = async (req, res, next) => {
 }
 
 // DELETE A PRODUCT         DELETE
-export const deleteProduct = async (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
     const productId = req.params.id
     try {
         await Product.findByIdandDelete(productId)

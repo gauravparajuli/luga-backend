@@ -1,8 +1,8 @@
-import Cart from '../models/Cart.js'
+const Cart = require('../models/Cart.js')
 
 // GET REQUESTED CART        GET
-export const getCart = async (req, res, next) => {
-    const userId = req.params.id
+exports.getCart = async (req, res, next) => {
+    const userId = req.user.id
     try {
         const cart = await Cart.findOne({ userId })
         res.status(200).json(cart)
@@ -12,7 +12,7 @@ export const getCart = async (req, res, next) => {
 }
 
 // GET ALL CARTS         GET
-export const getAllCarts = async (req, res, next) => {
+exports.getAllCarts = async (req, res, next) => {
     try {
         const carts = await Cart.find()
         res.status(200).json(carts)
@@ -22,8 +22,8 @@ export const getAllCarts = async (req, res, next) => {
 }
 
 // UPDATE A CART         UPDATE
-export const updateCart = async (req, res, next) => {
-    const userId = req.params.id
+exports.updateCart = async (req, res, next) => {
+    const userId = req.user.id
     try {
         const updatedCart = await Cart.findOneAndUpdate(
             { userId },

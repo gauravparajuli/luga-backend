@@ -1,9 +1,9 @@
-import { Router } from 'express'
+const { Router } = require('express')
 
-import isAdmin from '../middlewares/is-admin.js'
-import isAuthenticated from '../middlewares/is-authenticated.js'
+const isAdmin = require('../middlewares/is-admin.js')
+const isAuthenticated = require('../middlewares/is-authenticated.js')
 
-import * as productController from '../controllers/product'
+const productController = require('../controllers/product.js')
 
 const router = Router()
 
@@ -17,4 +17,4 @@ router.put('/:id', isAuthenticated, isAdmin, productController.updateProduct)
 
 router.delete('/:id', isAuthenticated, isAdmin, productController.deleteProduct)
 
-export default router
+module.exports = router
