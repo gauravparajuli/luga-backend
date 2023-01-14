@@ -1,21 +1,21 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const User = require('../models/User.js')
+const User = require('../models/User')
 const {
     validateUserSignin,
     validateUserSignup,
-} = require('../validators/user-validator.js')
+} = require('../validators/user-validator')
 
 // CREATE NEW USER      POST
 exports.signupUser = async (req, res, next) => {
     const { username, email, password } = req.body
 
-    const { error, value } = validateUserSignup(req.body)
+    const { error } = validateUserSignup(req.body)
 
     try {
         if (error) {
-            const err = new Error(`Input validation failed.`)
+            const err = new Error(`input validation failed.`)
             err.statusCode = 422
             err.details = error.details
             throw err
@@ -24,20 +24,20 @@ exports.signupUser = async (req, res, next) => {
         // check if email is already registered
         const user = await User.findOne({ email })
         if (user) {
-            const err = new Error(`User already registered`)
+            const err = new Error(`user already registered.`)
             err.statusCode = 400
-            err.details = error.details
             throw err
         }
 
-        let hashedPassword = await bcrypt.hash(
-            password,
-            process.env.SALT_ROUNDS || 7
-        )
+        let hashedPassword = bcrypt.hashSync(password, 7)
 
         const newUser = new User({ username, email, password: hashedPassword })
-        const savedUser = await newUser.save()
-        res.status(201).json(savedUser)
+        await newUser.save()
+        res.status(201).json({
+            _id: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+        })
     } catch (error) {
         next(error) // pass to error handling middleware
     }
@@ -46,10 +46,15 @@ exports.signupUser = async (req, res, next) => {
 // LOGIN USER       POST
 exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body
-    const { error, value } = userSigninSchema.validate(req.body, {
-        abortEarly: false,
-    })
+    const { error } = validateUserSignin(req.body)
     try {
+        if (error) {
+            const err = new Error(`input validation failed.`)
+            err.statusCode = 422
+            err.details = error.details
+            throw err
+        }
+
         const userInstance = await User.findOne({ email })
         if (!userInstance) {
             const error = new Error('invalid user or password.')

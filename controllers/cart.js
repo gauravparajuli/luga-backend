@@ -1,36 +1,38 @@
 const Cart = require('../models/Cart.js')
+const { validateCartItems } = require('../validators/cart-validator')
 
 // GET REQUESTED CART        GET
 exports.getCart = async (req, res, next) => {
     const userId = req.user.id
     try {
-        const cart = await Cart.findOne({ userId })
+        let cart
+        cart = await Cart.findOne({ userId })
+        if (!cart) {
+            cart = { userId, products: [] }
+        }
         res.status(200).json(cart)
     } catch (error) {
         next(error) // pass to error handling middleware
     }
 }
 
-// GET ALL CARTS         GET
-exports.getAllCarts = async (req, res, next) => {
-    try {
-        const carts = await Cart.find()
-        res.status(200).json(carts)
-    } catch (error) {
-        next(error)
-    }
-}
-
 // UPDATE A CART         UPDATE
 exports.updateCart = async (req, res, next) => {
     const userId = req.user.id
+    const { error } = validateCartItems(req.body)
     try {
+        if (error) {
+            const err = new Error(`input validation failed.`)
+            err.statusCode = 422
+            err.details = error.details
+            throw err
+        }
         const updatedCart = await Cart.findOneAndUpdate(
             { userId },
-            { $set: req.body },
+            { $set: { userId, ...req.body } },
             { new: true, upsert: true }
         )
-        res.status(200).send(updatedCart)
+        res.status(200).json(updatedCart)
     } catch (error) {
         next(error) // pass to error handling middleware
     }

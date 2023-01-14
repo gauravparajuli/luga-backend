@@ -4,7 +4,7 @@ const User = require('../models/User.js')
 exports.deleteUser = async (req, res, next) => {
     const userId = req.params.id
     try {
-        await User.findByIdandDelete(userId)
+        await User.findByIdAndDelete(userId)
         res.status(204).send()
     } catch (error) {
         next(error) // pass to error handling middleware
@@ -21,7 +21,7 @@ exports.getAllUsers = async (req, res, next) => {
                   .limit(5)
                   .select('username email createdAt')
             : await User.find().select('username email createdAt')
-        res.status(204).json(query)
+        res.status(200).json(query)
     } catch (error) {
         next(error) // pass to error handling middleware
     }
@@ -38,9 +38,13 @@ exports.getUsersStats = async (req, res, next) => {
                 $match: {
                     createdAt: { $gte: lastYear },
                 },
+            },
+            {
                 $project: {
                     month: { $month: '$createdAt' },
                 },
+            },
+            {
                 $group: {
                     _id: '$month',
                     total: { $sum: 1 },
