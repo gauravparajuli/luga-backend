@@ -15,6 +15,10 @@ const CartSchema = new Schema(
                     required: true,
                     unique: true,
                 },
+                unitPrice: {
+                    type: Number,
+                    required: true,
+                },
                 quantity: {
                     type: Number,
                     default: 1,

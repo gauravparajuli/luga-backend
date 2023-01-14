@@ -1,48 +1,40 @@
 const Order = require('../models/Order.js')
+const Cart = require('../models/Cart')
 
-// GET REQUESTED ORDER        GET
-exports.getOrder = async (req, res, next) => {
+exports.createMyOrder = async (req, res, next) => {
     const userId = req.user.id
-    try {
-        const cart = await Cart.findOne({ userId })
-        res.status(200).json(cart)
-    } catch (error) {
-        next(error) // pass to error handling middleware
+
+    const cart = await Cart.findOne({ userId })
+    if (!cart || cart.products.length === 0) {
+        const err = new Error('please add products to cart first.')
+        err.statusCode = 400
+        throw err
     }
+
+    const order = new Order({ userId })
 }
 
-exports.createOrder = async (req, res, next) => {}
-
-exports.deleteOrder = async (req, res, next) => {}
-
-// GET ALL ORDER         GET
-exports.getAllOrders = async (req, res, next) => {
+exports.deleteOrder = async (req, res, next) => {
+    const orderId = req.params.id
     try {
-        const carts = await Cart.find()
-        res.status(200).json(carts)
     } catch (error) {
         next(error)
     }
 }
 
-// UPDATE A ORDER         UPDATE
-exports.updateOrder = async (req, res, next) => {
-    const userId = req.user.id
+// GET ALL ORDER         GET
+exports.getAllOrders = async (req, res, next) => {
     try {
-        const updatedCart = await Cart.findOneAndUpdate(
-            { userId },
-            { $set: req.body },
-            { new: true, upsert: true }
-        )
-        res.status(200).send(updatedCart)
+        const orders = await Order.find()
+        res.status(200).json(orders)
     } catch (error) {
-        next(error) // pass to error handling middleware
+        next(error)
     }
 }
 
 // GET MONTHLY INCOME       GET
 exports.getMontlyIncome = async (req, res, next) => {
-    const Date = new Date()
+    const date = new Date()
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1))
     const previousMonth = new Date(new Date().setMonth(lastMonth - 1))
     try {
@@ -61,6 +53,7 @@ exports.getMontlyIncome = async (req, res, next) => {
                 },
             },
         ])
+        return res.status(200).json(income)
     } catch (error) {
         next(error) // pass to error handling middleware
     }

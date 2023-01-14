@@ -19,6 +19,7 @@ const cartItemsSchema = joi.object({
                     )
                     .required(),
                 quantity: joi.number().default(1),
+                unitPrice: joi.number().required(),
             })
         )
         .required(),

@@ -1,5 +1,7 @@
 const express = require('express')
 
+const fileUpload = require('express-fileupload')
+
 // import routes here
 const userRoutes = require('./routes/user.js')
 const authRoutes = require('./routes/auth.js')
@@ -17,6 +19,7 @@ const app = express()
 
 // register your middlewares here
 app.use(express.json())
+app.use(fileUpload())
 
 // register your routes here
 app.use('/api/v1/user', userRoutes)

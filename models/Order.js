@@ -14,6 +14,10 @@ const OrderSchema = new Schema(
                     required: true,
                     unique: true,
                 },
+                unitPrice: {
+                    type: Number,
+                    required: true,
+                },
                 quantity: {
                     type: Number,
                     default: 1,
@@ -25,15 +29,14 @@ const OrderSchema = new Schema(
             required: true,
         },
         address: {
-            type: Number,
-            required: true,
+            type: Object,
         },
         status: {
             type: String,
-            default: 'pending',
+            default: 'unpaid',
         },
     },
     { timestamps: true }
 )
 
-module.exports =  model('Order', OrderSchema)
+module.exports = model('Order', OrderSchema)
