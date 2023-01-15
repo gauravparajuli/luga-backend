@@ -11,6 +11,7 @@ const productSchema = joi.object({
     price: joi.number().required(),
     size: joi.string(),
     color: joi.string(),
+    image: joi.any(),
 })
 
 module.exports = {
