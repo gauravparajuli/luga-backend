@@ -31,9 +31,8 @@ const OrderSchema = new Schema(
         address: {
             type: Object,
         },
-        status: {
+        receipt: {
             type: String,
-            default: 'unpaid',
         },
     },
     { timestamps: true }

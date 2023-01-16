@@ -9,10 +9,6 @@ const router = Router()
 
 router.get('/', isAuthenticated, isAdmin, orderController.getAllOrders)
 
-router.post('/', isAuthenticated, orderController.createMyOrder)
-
-router.delete('/:id', isAuthenticated, isAdmin, orderController.deleteOrder)
-
 router.get('/stats', isAuthenticated, isAdmin, orderController.getMontlyIncome)
 
 module.exports = router

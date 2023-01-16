@@ -1,18 +1,4 @@
 const Order = require('../models/Order.js')
-const Cart = require('../models/Cart')
-
-exports.createMyOrder = async (req, res, next) => {
-    const userId = req.user.id
-
-    const cart = await Cart.findOne({ userId })
-    if (!cart || cart.products.length === 0) {
-        const err = new Error('please add products to cart first.')
-        err.statusCode = 400
-        throw err
-    }
-
-    const order = new Order({ userId })
-}
 
 exports.deleteOrder = async (req, res, next) => {
     const orderId = req.params.id
