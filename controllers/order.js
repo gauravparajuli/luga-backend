@@ -1,13 +1,5 @@
 const Order = require('../models/Order.js')
 
-exports.deleteOrder = async (req, res, next) => {
-    const orderId = req.params.id
-    try {
-    } catch (error) {
-        next(error)
-    }
-}
-
 // GET ALL ORDER         GET
 exports.getAllOrders = async (req, res, next) => {
     try {
