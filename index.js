@@ -17,3 +17,5 @@ mongoose
         console.log(`=> server running on port ${currentPort}`)
     })
     .catch((err) => console.log(err))
+
+export default mongoose
