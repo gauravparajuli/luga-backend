@@ -5,9 +5,11 @@ dotenv.config() // load the environment variables
 
 const { app } = require('./app')
 
+console.log(process.env.PORT)
+
 mongoose
     .connect(
-        process.NODE_ENV === 'production'
+        process.env.NODE_ENV === 'production'
             ? process.env.CONNECTION_URI
             : 'mongodb://localhost:27017/luga-backend'
     )
@@ -18,4 +20,4 @@ mongoose
     })
     .catch((err) => console.log(err))
 
-export default mongoose
+module.exports = []
